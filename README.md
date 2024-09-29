@@ -20,7 +20,7 @@ Joguinho feito pra o projeto de programação 1
 
 - [ ] Jogador
     - [x] Movimento
-        - [ ] Dash
+        - [x] Dash
         - [ ] Power-up?
     - [ ] Ataque
 
