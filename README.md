@@ -19,7 +19,7 @@ Joguinho feito pra o projeto de programação 1
     - [ ] Buffs
 
 - [ ] Jogador
-    - [ ] Movimento
+    - [x] Movimento
         - [ ] Dash
         - [ ] Power-up?
     - [ ] Ataque
