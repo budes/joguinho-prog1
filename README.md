@@ -22,5 +22,7 @@ Joguinho feito pra o projeto de programação 1
     - [x] Movimento
         - [x] Dash
         - [ ] Power-up?
-    - [ ] Ataque
+    - [x] Ataque 
+        - [x] Animar 
+        - [ ] Calcular hit-box
 
