@@ -5,6 +5,7 @@ import sys
 sys.path.insert(1, "./scripts/")
 
 from character import *
+from map import *
 
 import curses
 import time
@@ -35,7 +36,7 @@ def main(scr):
     while True:
         # frame rate setup
         time.sleep(1/30)
-
+        
         try:
             key = scr.getkey()
             active_keys.add(key)
@@ -58,6 +59,8 @@ def main(scr):
             break
 
         scr.clear()
+        scr.border(0)
+        map1(scr, max_height, max_width)
         scr.addch(*char_coords, character)
         scr.addstr(10, 10, str(list(active_keys)))
 
