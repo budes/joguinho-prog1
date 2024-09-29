@@ -1,6 +1,11 @@
 # Mesmo que usando classes esse código ficaria mil vezes melhor de ler e de trabalhar, vou
 # me limitar ao que foi ensinado nas aulas de prog1 da ufcg
 
+import sys
+sys.path.insert(1, "./scripts/")
+
+from character import *
+
 import curses
 import time
 
@@ -25,7 +30,7 @@ def main(scr):
 
     # main loop
     while True:
-        time.sleep(0.001)
+        time.sleep(1/60)
 
         try:
             key = scr.getkey()
@@ -44,13 +49,6 @@ def main(scr):
 
         if key not in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
             active_keys.clear()
-
-# Character handling
-def move_character(coords, side):
-    if side in "lr":
-        coords[1] += 2 if side == "r" else -2
-    elif side in "ud":
-        coords[0] += 2 if side == "d" else -2
 
 
 curses.wrapper(main)
