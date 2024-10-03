@@ -32,6 +32,8 @@ def main(scr):
     active_keys = set()
     count_not_active_buffer = 0
 
+    obstacles = generate_obstacles(max_height, max_width)
+
     # main loop
     while True:
         # frame rate setup
@@ -60,6 +62,7 @@ def main(scr):
 
         scr.clear()
         scr.border(0)
+        game_map(scr, obstacles, borders)
         scr.addch(*char_coords, character)
         scr.addstr(10, 10, str(list(active_keys)))
 
