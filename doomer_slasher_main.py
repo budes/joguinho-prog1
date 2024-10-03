@@ -44,23 +44,22 @@ def main(scr):
 
         if 'KEY_UP' in active_keys:
             if " " in active_keys: dash(char_coords, "u")
-            else: move_character(char_coords, "u")
+            else: move_character(char_coords, "u", can_move(max_height, char_coords[0], -2))
         if 'KEY_DOWN' in active_keys:
             if " " in active_keys: dash(char_coords, "d")
-            else: move_character(char_coords, "d")
+            else: move_character(char_coords, "d", can_move(max_height, char_coords[0], 2))
         if 'KEY_LEFT' in active_keys:
             if " " in active_keys: dash(char_coords, "l")
-            else: move_character(char_coords, "l")
+            else: move_character(char_coords, "l", can_move(max_width, char_coords[1], -4))
         if 'KEY_RIGHT' in active_keys:
             if " " in active_keys: dash(char_coords, "r")
-            else: move_character(char_coords, "r")
+            else: move_character(char_coords, "r", can_move(max_width, char_coords[1], 4))
 
         if key == 'q':  # quit the loop if 'q' is pressed
             break
 
         scr.clear()
         scr.border(0)
-        map1(scr, max_height, max_width)
         scr.addch(*char_coords, character)
         scr.addstr(10, 10, str(list(active_keys)))
 
