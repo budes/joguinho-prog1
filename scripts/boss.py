@@ -46,7 +46,7 @@ def boss_movement(boss_coords, max_x, max_y, directions, step=1):
 
     return directions, inversion
 
-def side_attack(scr, character, side, max_x, max_y, curr_pos, trace="#"):
+def side_attack(scr, character_coordinates, side, max_x, max_y, curr_pos, trace="#"):
     """
     - scr is for two reasons, first, it will draw something in the screen,
     and to detect if something (the character) is in there.
@@ -62,7 +62,7 @@ def side_attack(scr, character, side, max_x, max_y, curr_pos, trace="#"):
 
     if side in "lr":
         for y in range(max_y):
-            if scr.inch(y, curr_pos) == character: return -1
+            if [y, curr_pos] == character_coordinates: return -1
             scr.addch(y, curr_pos, trace)
 
         if max_x - 2 > curr_pos and curr_pos > 1:
@@ -73,7 +73,7 @@ def side_attack(scr, character, side, max_x, max_y, curr_pos, trace="#"):
 
     elif side in "ud":
         for x in range(max_x):
-            if scr.inch(curr_pos, x) == character: return -1
+            if [curr_pos, x] == character_coordinates: return -1
             scr.addch(curr_pos, x, trace)
 
         if max_y - 2 > curr_pos and curr_pos > 1:

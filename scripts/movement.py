@@ -6,7 +6,6 @@ def move_character(coords, side, step=1, mod=2):
     The mod value is to take care of the fact that the line height is
     greater than the line width.
     """
-
     if side in "lr":
         coords[1] += step * mod if side == "r" else -step * mod
     elif side in "ud":
@@ -18,5 +17,9 @@ def dash(coords, side, step=2, mod=2):
     In order to not be that complex of a function, it just uses
     the default movement function with a modifier to the step value.
     """
-
     move_character(coords, side, step*mod)
+
+def can_move(limit, coord, n):
+    if not limit > cord + n >= 0:
+        return False
+    return True
