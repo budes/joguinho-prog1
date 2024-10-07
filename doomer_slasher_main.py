@@ -16,6 +16,8 @@ borders = ["▀", "▄", "▟", "▜", "▙", "▛", "▐", "▌"]
 
 def main(scr):
     scr.clear()
+
+    FPS = 60
     scr.nodelay(True)
     curses.curs_set(0)
 
@@ -23,9 +25,9 @@ def main(scr):
     max_height = curses.LINES
 
     character = "█"
-    character_step = 1
+    character_step = 4
     character_mod = 2
-    dash_multiplier = 2
+    dash_multiplier = 3
 
     boss = "▒"
     boss_step = 1
@@ -51,7 +53,7 @@ def main(scr):
     # main loop
     while not terminate:
         # frame rate setup
-        time.sleep(1/30)
+        time.sleep(1/FPS)
 
         try:
             key = scr.getkey()
@@ -100,19 +102,19 @@ def main(scr):
             attacks.append(["side", side_inversion, side_attack(scr, char_coords, side_inversion, max_width, max_height, curr_pos)])
 
 
-        scr.addstr(10, 10, str(attacks))
+        scr.addstr(10, 10, str(active_keys))
         scr.addch(*boss_coords, boss)
         scr.border(0)
         game_map(scr, obstacles, borders)
         scr.addch(*char_coords, character)
 
-        if key != " " and key not in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
-            # This countdown makes the input easier to put
-            # The downside is that it makes the step longer
+        if " " in active_keys and key in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
+            count_not_active_buffer = 0
+            active_keys.clear()
+        elif " " in active_keys and not key in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
             count_not_active_buffer += 1
-
-            if count_not_active_buffer == 4:
-                count_not_active_buffer = 0
-                active_keys.clear()
+            if count_not_active_buffer > FPS//2: active_keys.clear()
+        else:
+            active_keys.clear()
 
 curses.wrapper(main)
