@@ -56,8 +56,9 @@ def main(scr):
         time.sleep(1/FPS)
 
         try:
-            key = scr.getkey()
-            active_keys.add(key)
+            while True:
+                key = scr.getkey()
+                active_keys.add(key)
         except: key = ""
 
         if 'KEY_UP' in active_keys:
@@ -108,13 +109,16 @@ def main(scr):
         game_map(scr, obstacles, borders)
         scr.addch(*char_coords, character)
 
-        if " " in active_keys and key in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
+        if " " in active_keys and not active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
+            scr.addstr(11, 11, "1")
             count_not_active_buffer = 0
             active_keys.clear()
-        elif " " in active_keys and not key in ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]:
+        elif " " in active_keys and active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
+            scr.addstr(11, 11, "2")
             count_not_active_buffer += 1
-            if count_not_active_buffer > FPS//2: active_keys.clear()
+            if count_not_active_buffer > FPS: active_keys.clear()
         else:
+            scr.addstr(11, 11, "3")
             active_keys.clear()
 
 curses.wrapper(main)
