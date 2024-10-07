@@ -59,17 +59,17 @@ def main(scr):
         except: key = ""
 
         if 'KEY_UP' in active_keys:
-            if " " in active_keys and can_move(max_height, char_coords[0], -character_step * 2): dash(char_coords, "u")
-            elif can_move(max_height, char_coords[0], -character_step): move_character(char_coords, "u")
+            if " " in active_keys: dash(char_coords, "u", get_max_dist(char_coords, "u", -character_step * dash_multiplier, obstacles, max_height))
+            else: move_character(char_coords, "u", get_max_dist(char_coords, "u", -character_step, obstacles, max_height))
         if 'KEY_DOWN' in active_keys:
-            if " " in active_keys and can_move(max_height, char_coords[0], character_step * 2): dash(char_coords, "d")
-            elif can_move(max_height, char_coords[0], character_step): move_character(char_coords, "d")
+            if " " in active_keys: dash(char_coords, "d", get_max_dist(char_coords, "d", character_step * dash_multiplier, obstacles, max_height))
+            else: move_character(char_coords, "d", get_max_dist(char_coords, "d", character_step, obstacles, max_height))
         if 'KEY_LEFT' in active_keys:
-            if " " in active_keys and can_move(max_width, char_coords[1], -character_step * character_mod * 2): dash(char_coords, "l")
-            elif can_move(max_width, char_coords[1], -character_step * character_mod): move_character(char_coords, "l")
+            if " " in active_keys: dash(char_coords, "l", get_max_dist(char_coords, "l", -character_step * character_mod * dash_multiplier, obstacles, max_width))
+            else: move_character(char_coords, "l", get_max_dist(char_coords, "l", -character_step * character_mod, obstacles, max_width))
         if 'KEY_RIGHT' in active_keys:
-            if " " in active_keys and can_move(max_width, char_coords[1], character_step * character_mod * 2): dash(char_coords, "r")
-            elif can_move(max_width, char_coords[1], character_step * character_mod): move_character(char_coords, "r")
+            if " " in active_keys: dash(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod  * dash_multiplier, obstacles, max_width))
+            else: move_character(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod, obstacles, max_width))
 
         if key == 'q':  # quit the loop if 'q' is pressed
             terminate = True

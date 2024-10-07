@@ -41,8 +41,8 @@ def boss_movement(boss_coords, max_x, max_y, directions, step=1):
         inversion = "d" if directions[1] == 0 else "u"
         directions[1] = int(directions[1] != 1)
 
-    move_character(boss_coords, "l" if directions[0] == 0 else "r", step)
-    move_character(boss_coords, "d" if directions[1] == 0 else "u", step)
+    move_character(boss_coords, "l" if directions[0] == 0 else "r", -step if directions[0] == 0 else step)
+    move_character(boss_coords, "d" if directions[1] == 0 else "u", step if directions[1] == 0 else -step)
 
     return directions, inversion
 
