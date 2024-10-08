@@ -18,7 +18,7 @@ def main(scr):
     scr.clear()
 
     # the screen part
-    FPS = 30
+    FPS = 60
     scr.nodelay(True)
     curses.curs_set(0)
 
@@ -88,13 +88,23 @@ def main(scr):
         # Updates the current attacks
         for index in range(len(attacks)-1, -1, -1):
             move = attacks[index]
-            if move[0] == "side" and move[2] not in [-1, None]:
-                attacks[index][2] = side_attack(scr, char_coords, move[1], max_width, max_height, move[2])
-            elif move[2] == -1:
-                terminate = True
-                break
-            else:
-                attacks.pop(index)
+
+            if move[0] == "side":
+                if move[2] not in [-1, None]:
+                    attack_feedback = side_attack(scr, char_coords, move[1], max_width, max_height, move[2])
+
+                    if move[3] == move[4]:
+                        attacks[index][2] = attack_feedback
+                        attacks[index][3] = 0
+                    else:
+                        attacks[index][3] += 1
+
+                elif move[2] == -1:
+                    continue
+                    terminate = True
+                    break
+                else:
+                    attacks.pop(index)
 
         # If it notices any wall touching, it will tell the side it inverted at
         # And use it in the side attack function
@@ -103,7 +113,12 @@ def main(scr):
             elif side_inversion == "r": curr_pos = max_width - 3
             else: curr_pos = max_height - 3
 
-            attacks.append(["side", side_inversion, side_attack(scr, char_coords, side_inversion, max_width, max_height, curr_pos)])
+            action_tick = 4 if side_inversion in "ud" else 1
+
+            # attack = ["type_of_attack", info_about_attack]
+            # in case of the side attack: ["side", "which side is it coming from", current_covered_position, current_tick, tick_of_actioni]
+            # we plan to still add another type of attack, a time based one only
+            attacks.append(["side", side_inversion, side_attack(scr, char_coords, side_inversion, max_width, max_height, curr_pos,), 0, action_tick])
 
 
         scr.addstr(10, 10, str(active_keys))
