@@ -17,29 +17,32 @@ borders = ["▀", "▄", "▟", "▜", "▙", "▛", "▐", "▌"]
 def main(scr):
     scr.clear()
 
-    FPS = 60
+    # the screen part
+    FPS = 30
     scr.nodelay(True)
     curses.curs_set(0)
 
+    # constants
     max_width = curses.COLS
     max_height = curses.LINES
 
+    # definition of the characters properties
     character = "█"
     character_step = 4
     character_mod = 2
     dash_multiplier = 3
+    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
-    boss = "▒"
+    # definition of the boss properties
+    boss = "█"
     boss_step = 1
     boss_mod = 2
     boss_buffer = 2
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
     # coordinates system is based in y, x -> curses.addch(y, x)
     char_coords = [max_height//2, max_width//2]
     boss_coords = [max_height//2 - 10, max_width//2]
-
-    scr.addch(*boss_coords, character)
-    scr.addch(*char_coords, character)
 
     scr.refresh()
 
@@ -74,7 +77,7 @@ def main(scr):
             if " " in active_keys: dash(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod  * dash_multiplier, obstacles, max_width))
             else: move_character(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod, obstacles, max_width))
 
-        if key == 'q':  # quit the loop if 'q' is pressed
+        if 'q' in active_keys:  # quit the loop if 'q' is pressed
             terminate = True
 
         scr.clear()
@@ -104,10 +107,12 @@ def main(scr):
 
 
         scr.addstr(10, 10, str(active_keys))
-        scr.addch(*boss_coords, boss)
+
+        scr.addch(*char_coords, character, curses.color_pair(1))
+        scr.addch(*boss_coords, boss, curses.color_pair(2))
+
         scr.border(0)
         game_map(scr, obstacles, borders)
-        scr.addch(*char_coords, character)
 
         if " " in active_keys and not active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
             scr.addstr(11, 11, "1")
