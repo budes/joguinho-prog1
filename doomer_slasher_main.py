@@ -87,7 +87,7 @@ def main(scr):
 
         # Boss_movement update and if it had touched any wall
         if boss_move_tick >= boss_buffer:
-            directions, side_inversion = boss_movement(boss_coords, max_width, max_height, directions)
+            directions, side_inversion = boss_movement(boss_coords, max_width, max_height, directions, obstacles)
             boss_move_tick = 0
         else: boss_move_tick += 1
 

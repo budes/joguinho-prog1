@@ -3,7 +3,7 @@ import curses
 
 from movement import *
 
-def boss_movement(boss_coords, max_x, max_y, directions, step=1):
+def boss_movement(boss_coords, max_x, max_y, directions, obstacles, step=1):
     """
     Basically makes the boss move in the predicted pattern -> Bouncing
     The movement is simple in order to make it easier to play and to build
@@ -32,12 +32,12 @@ def boss_movement(boss_coords, max_x, max_y, directions, step=1):
     if directions == [-1, -1]: directions = [randint(0,1), randint(0,1)]
 
     # X inversion
-    if (directions[0] and boss_coords[1] + step >= max_x -1) or (not directions[0] and boss_coords[1] - step <= 0):
+    if get_max_dist(boss_coords, "l" if directions[0] == 0 else "r", -step if directions[0] == 0 else step, obstacles, max_x) == 0:
         inversion = "l" if directions[0] == 0 else "r"
         directions[0] = int(directions[0] != 1)
 
     # Y inversion
-    if (not directions[1] and boss_coords[0] + step >= max_y) or (directions[1] and boss_coords[0] - step <= 0):
+    if get_max_dist(boss_coords, "d" if directions[1] == 0 else "u", step if directions[1] == 0 else -step, obstacles, max_y) == 0:
         inversion = "d" if directions[1] == 0 else "u"
         directions[1] = int(directions[1] != 1)
 
