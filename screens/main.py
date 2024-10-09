@@ -103,6 +103,10 @@ def main(scr):
         if 'q' in active_keys:  # quit the loop if 'q' is pressed
             terminate = True
 
+        if 'b' in active_keys and current_buffs[2]:
+            attacks = []
+            current_buffs[2] = 0
+
         scr.clear()
 
         # This parts makes sure the attacks does not stop right away, so you have more than 1 frame to hit the boss
@@ -148,9 +152,14 @@ def main(scr):
                         attacks[index][3] += 1
 
                 elif move[2] == -1:
-                    continue
-                    terminate = True
-                    break
+                    if current_buffs[0]:
+                        current_buffs[0] = False
+                        move[2] = 0
+                        break
+                    else:
+                        #continue
+                        terminate = True
+                        break
                 else:
                     attacks.pop(index)
 
