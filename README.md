@@ -2,27 +2,27 @@
 Joguinho feito pra o projeto de programação 1
 
 # TODO
-- [ ] Mapa
-    - [ ] Espaços
+- [x] Mapa
+    - [x] Espaços
     - [ ] Props?
-    - [ ] Obstáculo ou não
+    - [x] Obstáculos
 
-- [ ] Inimigo
-    - [ ] O principal (boss)
-        - [ ] O pattern de ataque
-        - [ ] Fraquezas
-        - [ ] Movimentação
+- [x] Inimigo
+    - [x] O principal (boss)
+        - [x] O pattern de ataque
+        - [x] Fraquezas
+        - [x] Movimentação
     - [ ] Inimigos secundários?
 
-- [ ] Armas/Ferramentas
-    - [ ] Espada
+- [x] Armas/Ferramentas
+    - [x] Espada
     - [ ] Buffs
 
-- [ ] Jogador
+- [x] Jogador
     - [x] Movimento
         - [x] Dash
         - [ ] Power-up?
     - [x] Ataque 
         - [x] Animar 
-        - [ ] Calcular hit-box
+        - [x] Calcular hit-box
 
