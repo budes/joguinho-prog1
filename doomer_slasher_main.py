@@ -8,11 +8,14 @@ from character import *
 from boss import *
 from movement import *
 from map import *
+from buffs import *
 
 import curses
 import time
 
 borders = ["▀", "▄", "▟", "▜", "▙", "▛", "▐", "▌"]
+
+buffs = ["🛡️", "🏹", "💥"]
 
 arrows = ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]
 wasd = ["w", "s", "a", "d"]
@@ -54,6 +57,9 @@ def main(scr):
 
     boss_max_life = 3
     boss_lives = 3
+
+    current_buffs = [False, False, False]
+    buff_on_map = []
 
     # coordinates system is based in y, x -> curses.addch(y, x)
     char_coords = [max_height//2, max_width//2]
@@ -172,6 +178,13 @@ def main(scr):
 
         game_map(scr, obstacles, borders)
         game_area(scr, max_width, max_height)
+
+        show_buffs(scr, current_buffs, buffs)
+        if len(buff_on_map) > 0:
+            render_buff(scr, buff_on_map)
+            check_got_buff(buff_on_map, current_buffs, char_coords)
+        else:
+            generate_buff(buff_on_map, max_width, max_height)
 
         life_bar(scr, boss_max_life, boss_lives, max_width)
 
