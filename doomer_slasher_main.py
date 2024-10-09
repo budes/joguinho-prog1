@@ -85,9 +85,14 @@ def introscreen(scr):
 
         try:
             key = scr.getkey()
-        except: ...
+        except:
+            key = "Nothing"
 
         if key == "q": break
+
+        if key == "\n":
+            for button in buttons.items():
+                if button[1][0] == selected_button and button[0] == "start": curses.wrapper(main)
 
         if key in (arrows[1], arrows[3], wasd[1], wasd[3]):
             selected_button += 1
@@ -98,6 +103,7 @@ def introscreen(scr):
             selected_button -= 1
             if selected_button < 0:
                 selected_button = len(buttons) - 1
+
 
 def main(scr):
     scr.clear()
