@@ -50,8 +50,10 @@ def introscreen(scr):
     button_height, button_width = 3, 20
     start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
 
+    selected_button = 0
     buttons = {"start": [], "settings": [], "quit": []}
 
+    # Creates the buttons, stores them by name and by index
     for index, button in enumerate(buttons.keys()):
         buttons[button].append(index)
         buttons[button].append(curses.newwin(button_height, button_width, start_y + index * button_height, start_x))
@@ -61,13 +63,9 @@ def introscreen(scr):
         for line in range(len(intro_text)):
             scr.addstr(line + 2, max_width // 2 - len(intro_text[-1]) // 2 - 1, intro_text[line])
 
-        # Set the size and position for the button
-        button_height, button_width = 3, 20
-        start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
-
         scr.refresh()
 
-        # Create a window for the button
+        # Updates buttons
         for button in buttons.items():
             button[1][1].addstr(button_height//2, (button_width - len(button[0].upper())) // 2, button[0].upper())
             button[1][1].box()
