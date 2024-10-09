@@ -20,6 +20,66 @@ wasd = ["w", "s", "a", "d"]
 movement_keys = wasd
 attack_keys = arrows
 
+def introscreen(scr):
+    scr.clear()
+
+    curses.curs_set(0)
+
+    max_width = curses.COLS
+    max_height = curses.LINES
+
+    intro_text = (
+    "   ░▒▓███████▓▒░   ░▒▓██████▓▒░   ░▒▓██████▓▒░  ░▒▓██████████████▓▒░  ░▒▓████████▓▒░ ░▒▓███████▓▒░",
+    "   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓██████▓▒░   ░▒▓███████▓▒░",
+    "   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "   ░▒▓███████▓▒░   ░▒▓██████▓▒░   ░▒▓██████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░",
+    "",
+    "  ░▒▓██████▓▒░ ░▒▓█▓▒░         ░▒▓██████▓▒░   ░▒▓███████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓████████▓▒░ ░▒▓███████▓▒░",
+    " ░▒▓█▓▒░       ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    " ░▒▓█▓▒░       ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "  ░▒▓█████▓▒░  ░▒▓█▓▒░        ░▒▓████████▓▒░  ░▒▓██████▓▒░  ░▒▓████████▓▒░ ░▒▓██████▓▒░   ░▒▓███████▓▒░",
+    "       ░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░        ░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "       ░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░        ░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░",
+    "░▒▓███████▓▒░  ░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓███████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓████████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░"
+    )
+
+    # Set the size and position for the button
+    button_height, button_width = 3, 20
+    start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
+
+    buttons = {"start": [], "settings": [], "quit": []}
+
+    for index, button in enumerate(buttons.keys()):
+        buttons[button].append(index)
+        buttons[button].append(curses.newwin(button_height, button_width, start_y + index * button_height, start_x))
+
+    while True:
+
+        for line in range(len(intro_text)):
+            scr.addstr(line + 2, max_width // 2 - len(intro_text[-1]) // 2 - 1, intro_text[line])
+
+        # Set the size and position for the button
+        button_height, button_width = 3, 20
+        start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
+
+        scr.refresh()
+
+        # Create a window for the button
+        for button in buttons.items():
+            button[1][1].addstr(button_height//2, (button_width - len(button[0].upper())) // 2, button[0].upper())
+            button[1][1].box()
+            button[1][1].refresh()
+
+        try:
+            key = scr.getkey()
+        except: ...
+
+        if key == "q": break
+
+
 def main(scr):
     scr.clear()
 
@@ -184,4 +244,4 @@ def main(scr):
         else:
             active_keys.clear()
 
-curses.wrapper(main)
+curses.wrapper(introscreen)
