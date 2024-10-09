@@ -19,17 +19,12 @@ def dash(coords, side, dist):
     """
     move_character(coords, side, dist)
 
-def can_move(limit, coord, n):
-    if not limit > coord + n >= 0:
-        return False
-    return True
-
 def get_max_dist(coords, side, normal_dist, obstacles, limit):
     max_dist = normal_dist
 
     while side == "d" and coords[0] + max_dist > limit -2:
         max_dist -= 1
-    while side == "u" and coords[0] + max_dist < 1:
+    while side == "u" and coords[0] + max_dist < 4:
         max_dist += 1
     while side == "r" and coords[1] + max_dist > limit -2:
         max_dist -= 1
