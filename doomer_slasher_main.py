@@ -18,7 +18,7 @@ def main(scr):
     scr.clear()
 
     # the screen part
-    FPS = 120
+    FPS = 200
     scr.nodelay(True)
     curses.curs_set(0)
 
@@ -31,6 +31,9 @@ def main(scr):
     character_step = 4
     character_mod = 2
     dash_multiplier = 3
+
+    attack_frames = 5
+    character_attack = [0, attack_frames]
     curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
     # definition of the boss properties
@@ -38,8 +41,8 @@ def main(scr):
     boss_step = 1
     boss_mod = 2
 
-    boss_move_tick = 3 # starts with 3 so it moves
-    boss_buffer = 3
+    boss_buffer = 4
+    boss_move_tick = boss_buffer # it is like that so it moves in the first cycle
 
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
@@ -56,6 +59,7 @@ def main(scr):
     attacks = []
     obstacles = generate_obstacles(max_height, max_width)
     terminate = False
+
     # main loop
     while not terminate:
         # frame rate setup
@@ -84,6 +88,20 @@ def main(scr):
             terminate = True
 
         scr.clear()
+
+        if character_attack[1] < attack_frames:
+            character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1)
+        elif "w" in active_keys:
+            character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0)
+        elif "a" in active_keys:
+            character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0)
+        elif "d" in active_keys:
+            character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0)
+        elif "s" in active_keys:
+            character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0)
+
+        # CHECKS IF THE BOSS WAS HIT
+        if character_attack[0] == 1: terminate = True
 
         # Boss_movement update and if it had touched any wall
         if boss_move_tick >= boss_buffer:
@@ -119,7 +137,7 @@ def main(scr):
             elif side_inversion == "r": curr_pos = max_width - 3
             else: curr_pos = max_height - 3
 
-            attack_tick = 4 if side_inversion in "ud" else 1
+            attack_tick = 5 if side_inversion in "ud" else 2
 
             # attack = ["type_of_attack", info_about_attack]
             # in case of the side attack: ["side", "which side is it coming from", current_covered_position, current_tick, tick_of_actioni]
@@ -127,12 +145,12 @@ def main(scr):
             attacks.append(["side", side_inversion, side_attack(scr, char_coords, side_inversion, max_width, max_height, curr_pos,), 0, attack_tick])
 
 
-        scr.addstr(10, 10, str(active_keys))
+        scr.addstr(10, 10, str(character_attack))
 
         scr.addch(*char_coords, character, curses.color_pair(1))
         scr.addch(*boss_coords, boss, curses.color_pair(2))
 
-        scr.border(0)
+        #scr.border(0)
         game_map(scr, obstacles, borders)
 
         if " " in active_keys and not active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
