@@ -14,6 +14,12 @@ import time
 
 borders = ["▀", "▄", "▟", "▜", "▙", "▛", "▐", "▌"]
 
+arrows = ["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]
+wasd = ["w", "s", "a", "d"]
+
+movement_keys = wasd
+attack_keys = arrows
+
 def main(scr):
     scr.clear()
 
@@ -41,7 +47,7 @@ def main(scr):
     boss_step = 1
     boss_mod = 2
 
-    boss_buffer = 4
+    boss_buffer = 10
     boss_move_tick = boss_buffer # it is like that so it moves in the first cycle
 
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -77,16 +83,17 @@ def main(scr):
                 active_keys.add(key)
         except: key = ""
 
-        if 'KEY_UP' in active_keys:
+        # Movement
+        if movement_keys[0] in active_keys:
             if " " in active_keys: dash(char_coords, "u", get_max_dist(char_coords, "u", -character_step * dash_multiplier, obstacles, max_height))
             else: move_character(char_coords, "u", get_max_dist(char_coords, "u", -character_step, obstacles, max_height))
-        if 'KEY_DOWN' in active_keys:
+        if movement_keys[1] in active_keys:
             if " " in active_keys: dash(char_coords, "d", get_max_dist(char_coords, "d", character_step * dash_multiplier, obstacles, max_height))
             else: move_character(char_coords, "d", get_max_dist(char_coords, "d", character_step, obstacles, max_height))
-        if 'KEY_LEFT' in active_keys:
+        if movement_keys[2] in active_keys:
             if " " in active_keys: dash(char_coords, "l", get_max_dist(char_coords, "l", -character_step * character_mod * dash_multiplier, obstacles, max_width))
             else: move_character(char_coords, "l", get_max_dist(char_coords, "l", -character_step * character_mod, obstacles, max_width))
-        if 'KEY_RIGHT' in active_keys:
+        if movement_keys[3] in active_keys:
             if " " in active_keys: dash(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod  * dash_multiplier, obstacles, max_width))
             else: move_character(char_coords, "r", get_max_dist(char_coords, "r", character_step * character_mod, obstacles, max_width))
 
@@ -95,20 +102,23 @@ def main(scr):
 
         scr.clear()
 
+        # This parts makes sure the attacks does not stop right away, so you have more than 1 frame to hit the boss
         if character_attack[1] < attack_frames:
             character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1)
-        elif "w" in active_keys:
+
+        # This part is to detect new inputs
+        elif attack_keys[0] in active_keys:
             character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0)
-        elif "a" in active_keys:
+        elif attack_keys[2] in active_keys:
             character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0)
-        elif "d" in active_keys:
+        elif attack_keys[3] in active_keys:
             character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0)
-        elif "s" in active_keys:
+        elif attack_keys[1] in active_keys:
             character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0)
 
         # CHECKS IF THE BOSS WAS HIT
 
-        if character_attack[0] == 1: 
+        if character_attack[0] == 1:
             boss_lives -= 1
             character_attack = [0, attack_frames]
 
@@ -155,6 +165,8 @@ def main(scr):
             # we plan to still add another type of attack, a time based one only
             attacks.append(["side", side_inversion, side_attack(scr, char_coords, side_inversion, max_width, max_height, curr_pos,), 0, attack_tick])
 
+            # As it spends ticks in delay, it will not generate any more attacks
+            side_inversion = None
 
         scr.addstr(10, 10, str(character_attack))
 
@@ -164,10 +176,10 @@ def main(scr):
         game_map(scr, obstacles, borders)
         life_bar(scr, boss_max_life, boss_lives, max_width//2)
 
-        if " " in active_keys and not active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
+        if " " in active_keys and not active_keys.isdisjoint(movement_keys):
             count_not_active_buffer = 0
             active_keys.clear()
-        elif " " in active_keys and active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
+        elif " " in active_keys and active_keys.isdisjoint(movement_keys):
             count_not_active_buffer += 1
             if count_not_active_buffer > FPS: active_keys.clear()
         else:
