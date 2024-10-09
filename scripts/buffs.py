@@ -6,7 +6,7 @@ def show_buffs(scr, current_buffs, buffs):
             scr.addstr(1, (i+1) * 3, buffs[i])
 
 def generate_buff(buff_on_map, x, y):
-    if random.randint(1, 100) == 5:
+    if random.randint(1, 2000) == 5:
         buff_on_map.append(((random.randint(4, y-2)), (random.randint(4, x-2))))
         buff_on_map.append(random.randint(0, 2))
 

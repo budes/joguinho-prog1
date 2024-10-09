@@ -111,17 +111,21 @@ def main(scr):
 
         # This parts makes sure the attacks does not stop right away, so you have more than 1 frame to hit the boss
         if character_attack[1] < attack_frames:
-            character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1)
+            character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1, 7 if current_buffs[1] else 5)
 
         # This part is to detect new inputs
         elif attack_keys[0] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0, 7 if current_buffs[1] else 5)
+            current_buffs[1] = False
         elif attack_keys[2] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0, 7 if current_buffs[1] else 5)
+            current_buffs[1] = False
         elif attack_keys[3] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0, 7 if current_buffs[1] else 5)
+            current_buffs[1] = False
         elif attack_keys[1] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0, 7 if current_buffs[1] else 5)
+            current_buffs[1] = False
 
         # CHECKS IF THE BOSS WAS HIT
 
@@ -189,6 +193,7 @@ def main(scr):
         game_area(scr, max_width, max_height)
 
         show_buffs(scr, current_buffs, buffs)
+        
         if len(buff_on_map) > 0:
             render_buff(scr, buff_on_map)
             check_got_buff(buff_on_map, current_buffs, char_coords)
