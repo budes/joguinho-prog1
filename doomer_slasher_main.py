@@ -43,6 +43,12 @@ def main(scr):
 
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
+    boss_max_life = 3
+    boss_lives = 2
+
+    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLACK)
+
     # coordinates system is based in y, x -> curses.addch(y, x)
     char_coords = [max_height//2, max_width//2]
     boss_coords = [max_height//2 - 10, max_width//2]
@@ -132,8 +138,8 @@ def main(scr):
         scr.addch(*char_coords, character, curses.color_pair(1))
         scr.addch(*boss_coords, boss, curses.color_pair(2))
 
-        scr.border(0)
         game_map(scr, obstacles, borders)
+        life_bar(scr, boss_max_life, boss_lives, max_width//2)
 
         if " " in active_keys and not active_keys.isdisjoint(["KEY_UP", "KEY_DOWN", "KEY_LEFT", "KEY_RIGHT"]):
             count_not_active_buffer = 0
