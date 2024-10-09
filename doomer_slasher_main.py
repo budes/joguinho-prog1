@@ -50,8 +50,14 @@ def introscreen(scr):
     button_height, button_width = 3, 20
     start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
 
-    selected_button = 0
     buttons = {"start": [], "settings": [], "quit": []}
+
+    # Selected button
+    selected_button = 0
+
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE) # Selected
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK) # Not selected
+
 
     # Creates the buttons, stores them by name and by index
     for index, button in enumerate(buttons.keys()):
@@ -69,6 +75,12 @@ def introscreen(scr):
         for button in buttons.items():
             button[1][1].addstr(button_height//2, (button_width - len(button[0].upper())) // 2, button[0].upper())
             button[1][1].box()
+
+            if button[1][0] == selected_button:
+                button[1][1].bkgd(' ', curses.color_pair(1))
+            else:
+                button[1][1].bkgd(' ', curses.color_pair(2))
+
             button[1][1].refresh()
 
         try:
@@ -77,6 +89,15 @@ def introscreen(scr):
 
         if key == "q": break
 
+        if key in (arrows[1], arrows[3], wasd[1], wasd[3]):
+            selected_button += 1
+            if selected_button == len(buttons):
+                selected_button = 0
+
+        elif key in (arrows[0], arrows[2], wasd[0], wasd[2]):
+            selected_button -= 1
+            if selected_button < 0:
+                selected_button = len(buttons) - 1
 
 def main(scr):
     scr.clear()
