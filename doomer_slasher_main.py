@@ -47,7 +47,7 @@ def main(scr):
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
     boss_max_life = 3
-    boss_lives = 2
+    boss_lives = 3
 
     curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLACK)
@@ -107,7 +107,12 @@ def main(scr):
             character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0)
 
         # CHECKS IF THE BOSS WAS HIT
-        if character_attack[0] == 1: terminate = True
+
+        if character_attack[0] == 1: 
+            boss_lives -= 1
+            character_attack = [0, attack_frames]
+
+        if boss_lives == 0: terminate = True
 
         # Boss_movement update and if it had touched any wall
         if boss_move_tick >= boss_buffer:
