@@ -12,6 +12,7 @@ from buffs import *
 
 import curses
 import time
+import json
 
 borders = ["▀", "▄", "▟", "▜", "▙", "▛", "▐", "▌"]
 
@@ -26,8 +27,19 @@ attack_keys = arrows
 def main(scr):
     scr.clear()
 
+    with open("settings.json", "r") as file:
+        data = json.load(file)
+
+    # movement keys used
+    if data["wasd_as_movement"]:
+        movement_keys = wasd
+        attack_keys = arrows
+    else:
+        movement_keys = arrows
+        attack_keys = wasd
+
     # the screen part
-    FPS = 200
+    FPS = data["FPS"]
     scr.nodelay(True)
     curses.curs_set(0)
 
@@ -36,27 +48,29 @@ def main(scr):
     max_height = curses.LINES
 
     # definition of the characters properties
-    character = "█"
-    character_step = 4
-    character_mod = 2
-    dash_multiplier = 3
+    character = data["character"]
+    character_step = data["character_step"]
+    character_mod = data["character_mod"]
+    dash_multiplier = data["dash_multiplier"]
 
-    attack_frames = 5
+    attack_frames = data["char_attack_frames"]
     character_attack = [0, attack_frames]
-    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    eval(data["char_color"])
+    # curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
     # definition of the boss properties
-    boss = "█"
-    boss_step = 1
-    boss_mod = 2
+    boss = data["boss"]
+    boss_step = data["boss_step"]
+    boss_mod = data["boss_mod"]
 
-    boss_buffer = 10
+    boss_buffer = data["boss_buffer"]
     boss_move_tick = boss_buffer # it is like that so it moves in the first cycle
 
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    eval(data["boss_color"])
+    #curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 
     boss_max_life = 3
-    boss_lives = 3
+    boss_lives = boss_max_life
 
     current_buffs = [False, False, False]
     buff_on_map = []
@@ -170,7 +184,7 @@ def main(scr):
             elif side_inversion == "r": curr_pos = max_width - 3
             else: curr_pos = max_height - 3
 
-            attack_tick = 5 if side_inversion in "ud" else 2
+            attack_tick = data["boss_side_attack_tick"][0] if side_inversion in "ud" else data["boss_side_attack_tick"][1] 
 
             # attack = ["type_of_attack", info_about_attack]
             # in case of the side attack: ["side", "which side is it coming from", current_covered_position, current_tick, tick_of_actioni]

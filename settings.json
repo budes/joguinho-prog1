@@ -1,0 +1,18 @@
+{
+    "character": "█",
+    "character_step": 4,
+    "character_mod": 2,
+    "dash_multiplier": 3,
+	"char_attack_frames": 5,
+    "char_color": "curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)",
+
+	"boss": "█",
+    "boss_step": 1,
+    "boss_mod": 2,
+    "boss_buffer": 10,
+    "boss_color": "curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)",
+	"boss_side_attack_tick": [5, 2],
+
+	"wasd_as_movement": 1,
+	"FPS": 200
+}
