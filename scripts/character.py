@@ -1,4 +1,4 @@
-def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_time, distance=5, symbol="#", width=3):
+def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_time, distance, boss_immunity, symbol="#", width=3):
     """
     The system of side will be the same as the movement parts
     It will use the symbol to emulate the attack pattern
@@ -18,12 +18,12 @@ def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_tim
             for x in range(1, distance+1):
                 if side == "r":
                     try:
-                        if [character_coordinates[0] + y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
+                        if not boss_immunity and [character_coordinates[0] + y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
                         scr.addch(character_coordinates[0] + y, character_coordinates[1] + x, symbol)
                     except: ...
                 else:
                     try:
-                        if [character_coordinates[0] + y, character_coordinates[1] - x] == enemy_coordinates: return [1, attack_time, side]
+                        if not boss_immunity and [character_coordinates[0] + y, character_coordinates[1] - x] == enemy_coordinates: return [1, attack_time, side]
                         scr.addch(character_coordinates[0] + y, character_coordinates[1] - x, symbol)
                     except: ...
 
@@ -32,12 +32,12 @@ def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_tim
             for x in range(-width, width + 1):
                 if side == "u":
                     try:
-                        if [character_coordinates[0] - y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
+                        if not boss_immunity and  [character_coordinates[0] - y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
                         scr.addch(character_coordinates[0] - y, character_coordinates[1] + x, symbol)
                     except: pass
                 else:
                     try:
-                        if [character_coordinates[0] + y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
+                        if not boss_immunity and  [character_coordinates[0] + y, character_coordinates[1] + x] == enemy_coordinates: return [1, attack_time, side]
                         scr.addch(character_coordinates[0] + y, character_coordinates[1] + x, symbol)
                     except: pass
 
