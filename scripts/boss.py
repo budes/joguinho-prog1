@@ -84,10 +84,10 @@ def side_attack(scr, character_coordinates, side, max_x, max_y, curr_pos, trace=
 
     return curr_pos
 
-def life_bar(scr, max_life, lives, x):
+def life_bar(scr, max_life, lives, x, immunity):
     for i in range((max_life * 30) + 3):
         if not i % 31 == 0:
             if i in range((lives * 30) + lives):
-                scr.addch(1, x // 2 - (max_life * 15) + i - 3, "█", curses.color_pair(2))
+                scr.addch(1, x // 2 - (max_life * 15) + i - 3, "█", curses.color_pair(3 if immunity else 2))
             else:
                 scr.addch(1, x // 2 - (max_life * 15) + i - 3, "█")

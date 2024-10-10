@@ -73,6 +73,10 @@ def main(scr):
     boss_max_life = 3
     boss_lives = boss_max_life
 
+    boss_immunity_time = 0
+
+    curses.init_pair(3, curses.COLOR_CYAN, curses.COLOR_BLACK)
+
     current_buffs = [False, False, False]
     buff_on_map = []
 
@@ -126,20 +130,20 @@ def main(scr):
 
         # This parts makes sure the attacks does not stop right away, so you have more than 1 frame to hit the boss
         if character_attack[1] < attack_frames:
-            character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1, 7 if current_buffs[1] else 5)
+            character_attack = sword_attack(scr, char_coords, boss_coords, character_attack[2], character_attack[1] + 1, 7 if current_buffs[1] else 5, boss_immunity_time <= 4 * FPS)
 
         # This part is to detect new inputs
         elif attack_keys[0] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0, 7 if current_buffs[1] else 5)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "u", 0, 7 if current_buffs[1] else 5, boss_immunity_time <= 4 * FPS)
             current_buffs[1] = False
         elif attack_keys[2] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0, 7 if current_buffs[1] else 5)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "l", 0, 7 if current_buffs[1] else 5, boss_immunity_time <= 4 * FPS)
             current_buffs[1] = False
         elif attack_keys[3] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0, 7 if current_buffs[1] else 5)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "r", 0, 7 if current_buffs[1] else 5, boss_immunity_time <= 4 * FPS)
             current_buffs[1] = False
         elif attack_keys[1] in active_keys:
-            character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0, 7 if current_buffs[1] else 5)
+            character_attack = sword_attack(scr, char_coords, boss_coords, "d", 0, 7 if current_buffs[1] else 5, boss_immunity_time <= 4 * FPS)
             current_buffs[1] = False
 
         # CHECKS IF THE BOSS WAS HIT
@@ -147,10 +151,13 @@ def main(scr):
         if character_attack[0] == 1:
             boss_lives -= 1
             character_attack = [0, attack_frames]
+            boss_immunity_time = 0
 
         if boss_lives == 0:
             win(scr, max_width, max_height)
             terminate = True
+
+        boss_immunity_time += 1
 
         # Boss_movement update and if it had touched any wall
         if boss_move_tick >= boss_buffer:
@@ -216,7 +223,7 @@ def main(scr):
         else:
             generate_buff(buff_on_map, max_width, max_height)
 
-        life_bar(scr, boss_max_life, boss_lives, max_width)
+        life_bar(scr, boss_max_life, boss_lives, max_width, boss_immunity_time <= 4 * FPS)
 
         if " " in active_keys and not active_keys.isdisjoint(movement_keys):
             count_not_active_buffer = 0
