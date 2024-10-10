@@ -9,6 +9,7 @@ from boss import *
 from movement import *
 from map import *
 from buffs import *
+from win import *
 
 import curses
 import time
@@ -133,7 +134,9 @@ def main(scr):
             boss_lives -= 1
             character_attack = [0, attack_frames]
 
-        if boss_lives == 0: terminate = True
+        if boss_lives == 0:
+            win(scr, max_width, max_height)
+            terminate = True
 
         # Boss_movement update and if it had touched any wall
         if boss_move_tick >= boss_buffer:
@@ -161,7 +164,6 @@ def main(scr):
                         move[2] = 0
                         break
                     else:
-                        #continue
                         terminate = True
                         break
                 else:
