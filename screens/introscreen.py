@@ -32,9 +32,9 @@ def introscreen(scr):
 
     # Set the size and position for the button
     button_height, button_width = 3, 20
-    start_y, start_x = max_height//2, max_width//2 - button_width//2  # Position of the button
+    start_y, start_x = max_height//2 + len(intro_text)//4, max_width//2 - button_width//2  # Position of the button
 
-    buttons = {"start": [], "settings": [], "quit": []}
+    buttons = {"start": [], "tutorial": [], "settings": [], "quit": []}
 
     # Selected button
     selected_button = 0
@@ -47,7 +47,6 @@ def introscreen(scr):
     for index, button in enumerate(buttons.keys()):
         buttons[button].append(index)
         buttons[button].append(curses.newwin(button_height, button_width, start_y + index * button_height, start_x))
-
 
     terminate_game = False
     while not terminate_game:
@@ -75,10 +74,7 @@ def introscreen(scr):
             key = "Nothing"
 
         if key == "\n":
-            for button in buttons.items():
-                if button[1][0] == selected_button:
-                    if button[0] == "start": return 1
-                    if button[0] == "quit": return 0
+            return selected_button
 
         if key in (arrows[1], arrows[3], wasd[1], wasd[3]):
             selected_button += 1
