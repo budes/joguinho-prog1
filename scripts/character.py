@@ -1,4 +1,4 @@
-def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_time, symbol="#", distance=5, width=3):
+def sword_attack(scr, character_coordinates, enemy_coordinates, side, attack_time, distance=5, symbol="#", width=3):
     """
     The system of side will be the same as the movement parts
     It will use the symbol to emulate the attack pattern
